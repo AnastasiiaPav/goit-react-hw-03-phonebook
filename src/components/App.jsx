@@ -15,7 +15,6 @@ class Application extends Component {
     });
   };
 
-
   onFilterSearch = () => {
     return this.state.contacts.filter(contact => {
       return contact.name
@@ -24,21 +23,34 @@ class Application extends Component {
     });
   };
 
-
   deleteUser = userId => {
-    this.setState( prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.number !== userId)
-    }))
-  }
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.number !== userId),
+    }));
+  };
 
   dataFormSubmit = data => {
-    const searchName = this.state.contacts.map(contact => contact.name)
-if (searchName.includes(data.name)) {
-  alert('Не получится добавить такое имя:(')
-} else{
-  this.setState({ contacts: [data, ...this.state.contacts] });
-}
+    const searchName = this.state.contacts.map(contact => contact.name);
+    if (searchName.includes(data.name)) {
+      alert('Не получится добавить такое имя:(');
+    } else {
+      this.setState({ contacts: [data, ...this.state.contacts] });
+    }
   };
+
+  componentDidMount() {
+    const contactStorage = localStorage.getItem('contacts');
+    const contactParse = JSON.parse(contactStorage);
+    if (contactParse) {
+      return this.setState({ contact: contactParse });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts.length !== prevState.contacts.length) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   render() {
     return (
@@ -47,7 +59,10 @@ if (searchName.includes(data.name)) {
         <Form onSubmit={this.dataFormSubmit} />
         <h2>Contacts</h2>
         <Filter onChange={this.filterInput} value={this.state.filter} />
-        <ContactList listsContact={this.onFilterSearch()}  onDelete={this.deleteUser}/>
+        <ContactList
+          listsContact={this.onFilterSearch()}
+          onDelete={this.deleteUser}
+        />
       </div>
     );
   }
