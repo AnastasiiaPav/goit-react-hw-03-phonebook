@@ -1,3 +1,4 @@
+import propTypes from 'prop-types';
 
 
 export const  Filter = ({onChange, value }) => {
@@ -8,3 +9,7 @@ export const  Filter = ({onChange, value }) => {
   )
     
 } 
+Filter.propTypes = {
+  onChange: propTypes.func,
+  value: propTypes.string,
+}

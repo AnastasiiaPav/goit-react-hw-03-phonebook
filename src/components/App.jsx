@@ -2,6 +2,8 @@ import { Component } from 'react';
 import { Form } from './FormApp';
 import { ContactList } from './ContactList';
 import { Filter } from './Filter';
+import propTypes from 'prop-types';
+
 
 class Application extends Component {
   state = {
@@ -85,3 +87,12 @@ class Application extends Component {
 export const App = () => {
   return <Application />;
 };
+
+Application.propTypes = {
+  filterInput: propTypes.func,
+  onFilterSearch: propTypes.func,
+  deleteUser: propTypes.func,
+  dataFormSubmit: propTypes.func,
+  state: propTypes.object,
+  contacts: propTypes.array,
+}
